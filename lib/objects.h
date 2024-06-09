@@ -193,7 +193,7 @@ class game_player : public entity {
         start_postion_x,
         start_position_y,
         100,
-        0.1,
+        0.5,
         8,
         8,
         false,
