@@ -12,14 +12,18 @@ using namespace std;
 
 int main()
 {
-    int window_width = GetScreenWidth();
-    int window_height = GetScreenHeight();
+    // int window_width = GetScreenWidth();
+    // int window_height = GetScreenHeight();
+
+    int window_width = 1280;
+    int window_height = 960;
 
     int render_width = 320;
     int render_height = 240;
 
 
     InitWindow(window_width, window_height, "debug");
+
     const RenderTexture2D target = LoadRenderTexture(render_width, render_height);
 
     //ToggleFullscreen();
@@ -29,6 +33,8 @@ int main()
 
     SetTargetFPS(60);
 
+    SetWindowState(FLAG_WINDOW_RESIZABLE);
+
 
     while (!WindowShouldClose())
     {
@@ -37,23 +43,20 @@ int main()
 
         player.update_player(deltaTime);
 
-        BeginTextureMode(target);
+        BeginDrawing();
+
+            BeginTextureMode(target);
+                ClearBackground(BLACK);
+
+                player.draw();
+                draw_tiles();
+                debug_menu();
+            EndTextureMode();
             ClearBackground(BLACK);
-
-            player.draw();
-            draw_tiles();
-            debug_menu();
-
-        EndTextureMode();
-
-
-    BeginDrawing();
-
-        ClearBackground(BLACK);
-        DrawTexturePro(target.texture, (Rectangle){ 0.0f, 0.0f, (float)target.texture.width, (float)-target.texture.height },
-                           (Rectangle){ (GetScreenWidth() - ((float)render_width*scale))*0.5f, (GetScreenHeight() - ((float)render_height*scale))*0.5f,
-                           (float)render_width*scale, (float)render_height*scale }, (Vector2){ 0, 0 }, 0.0f, WHITE);
-    EndDrawing();
+            DrawTexturePro(target.texture, (Rectangle){ 0.0f, 0.0f, (float)target.texture.width, (float)-target.texture.height },
+                               (Rectangle){ (GetScreenWidth() - ((float)render_width*scale))*0.5f, (GetScreenHeight() - ((float)render_height*scale))*0.5f,
+                               (float)render_width*scale, (float)render_height*scale }, (Vector2){ 0, 0 }, 0.0f, WHITE);
+        EndDrawing();
 }
 
     CloseWindow();
