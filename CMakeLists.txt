@@ -29,6 +29,7 @@ add_executable(${PROJECT_NAME} main.cpp
         lib/debug_menu.cpp
         lib/float_conversion.cpp
         lib/int_conversion.cpp
+        player.cpp
         lib/objects.h
         tiles.cpp
 )

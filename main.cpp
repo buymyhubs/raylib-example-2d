@@ -35,7 +35,7 @@ int main()
         deltaTime = GetFrameTime()*100;
         float scale = MIN((float)GetScreenWidth()/render_width, (float)GetScreenHeight()/render_height);
 
-        player.update(deltaTime);
+        player.update_player(deltaTime);
 
         BeginTextureMode(target);
             ClearBackground(BLACK);

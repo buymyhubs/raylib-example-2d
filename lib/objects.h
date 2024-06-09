@@ -162,7 +162,7 @@ class entity : public object {
         // same as setting x with set_x, but with collision against solid objects
         void set_entity_x(const float x) {
             int direction = x > get_x() ? 1 : -1;
-            Rectangle check_rectangle = { get_real_x()+direction, get_real_y(), get_collision_rectangle().width, get_collision_rectangle().height };
+            Rectangle check_rectangle = { get_real_x()+(direction), get_real_y(), get_collision_rectangle().width, get_collision_rectangle().height };
             for (int i = 0; i < solid_count; i++) {
                 if (!CheckCollisionRecs(check_rectangle, solids[i])) {
                     set_x(x);
@@ -173,7 +173,7 @@ class entity : public object {
         // same as setting y with set_y, but with collision against solid objects
         void set_entity_y(const float y) {
             int direction = y > get_y() ? 1 : -1;
-            Rectangle check_rectangle = { get_real_x(), get_real_y()+direction, get_collision_rectangle().width, get_collision_rectangle().height };
+            Rectangle check_rectangle = { get_real_x(), get_real_y()+(direction), get_collision_rectangle().width, get_collision_rectangle().height };
             for (int i = 0; i < solid_count; i++) {
                 if (!CheckCollisionRecs(check_rectangle, solids[i])) {
                     set_y(y);
@@ -182,8 +182,6 @@ class entity : public object {
         }
 
 };
-
-// player logic
 
 class game_player : public entity {
     private:
@@ -195,7 +193,7 @@ class game_player : public entity {
         start_postion_x,
         start_position_y,
         100,
-        0.5,
+        0.1,
         8,
         8,
         false,
@@ -206,7 +204,7 @@ class game_player : public entity {
     void set_player_x(const float x) { set_entity_x(x); }
     void set_player_y(const float y) { set_entity_y(y); }
 
-    void update(float deltaTime) {
+    void update_player(float deltaTime) {
         if (IsKeyDown(KEY_D)) {
             set_player_x(get_x() + get_speed()*deltaTime);
         }
@@ -223,8 +221,6 @@ class game_player : public entity {
 };
 
 inline game_player player = game_player(150,150);
-
-// end of player logic
 
 
 #endif //OBJECTS_H
