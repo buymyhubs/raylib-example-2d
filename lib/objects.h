@@ -5,6 +5,8 @@
 #include <utility>
 #include <vector>
 
+#include <math.h>
+
 #include "raylib.h"
 
 inline std::vector<Rectangle> solids;
@@ -12,12 +14,25 @@ inline int solid_count = 0;
 
 class object {
     private:
-        float x;
-        float y;
+
+        float real_x;
+        float real_y;
+
+        int x;
+        int y;
+
+        float collision_width;
+        float collision_height;
+
+        int width;
+        int height;
+
         bool sprite;
         bool text;
         std::string text_value;
         Rectangle collision_rectangle;
+
+        Color color = BLUE;
 
         int solid_collision_index;
 
@@ -29,20 +44,29 @@ class object {
             const bool sprite,
             const bool text,
             std::string text_value,
-            int collision_height,
-            int collision_width,
+            int width,
+            int height,
             bool solid,
             bool hurts
             )
         {
+            this->real_x = x;
+            this->real_y = y;
             this->x = x;
             this->y = y;
+
+            this->width = width;
+            this->height = height;
+
+            this->collision_width = width;
+            this->collision_height = height;
+
             this->sprite = sprite;
             this->text = text;
             this->text_value = std::move(text_value);
 
-            this->collision_rectangle.x = x;
-            this->collision_rectangle.y = y;
+            this->collision_rectangle.x = real_x;
+            this->collision_rectangle.y = real_y;
             this->collision_rectangle.width = collision_width;
             this->collision_rectangle.height = collision_height;
 
@@ -54,32 +78,39 @@ class object {
 
         [[nodiscard]] float get_x() const { return x; }
         [[nodiscard]] float get_y() const { return y; }
+        [[nodiscard]] float get_real_x() const { return real_x; }
+        [[nodiscard]] float get_real_y() const { return real_y; }
         [[nodiscard]] bool get_sprite() const { return sprite; }
         [[nodiscard]] bool get_text() const { return text; }
         std::string get_text_value() { return text_value; }
         [[nodiscard]] Rectangle get_collision_rectangle() const { return collision_rectangle; }
 
 
-        void set_x(const float x) {
-            set_collision_rectangle_x(x);
-            this->x = x;
+        void set_x(const float x_new) {
+            this->real_x=x_new;
+            set_collision_rectangle_x(real_x);
+            int rendered_x = std::round(real_x);
+            this->x = rendered_x;
         }
-        void set_y(const float y) {
-            set_collision_rectangle_y(y);
-            this->y = y;
+        void set_y(const float y_new) {
+            this->real_y=y_new;
+            set_collision_rectangle_y(real_y);
+            int rendered_y = std::round(real_y);
+            this->y = rendered_y;
         }
         void set_sprite(const bool sprite) { this->sprite = sprite; }
         void set_text(const bool text) { this->text = text; }
         void set_text_value(const std::string& text_value) { this->text_value = text_value; }
+        void set_color(const Color color) { this->color = color; }
 
-        void set_collision_rectangle_x(const float x) { this->collision_rectangle.x = x; }
-        void set_collision_rectangle_y(const float y) { this->collision_rectangle.y = y; }
-        void set_collision_rectangle_width(const float width) { this->collision_rectangle.width = width; }
-        void set_collision_rectangle_height(const float height) { this->collision_rectangle.height = height; }
+        void set_collision_rectangle_x(const float x) { this->collision_rectangle.x = real_x; }
+        void set_collision_rectangle_y(const float y) { this->collision_rectangle.y = real_y; }
+        void set_collision_rectangle_width(const float width) { this->collision_rectangle.width = collision_width; }
+        void set_collision_rectangle_height(const float height) { this->collision_rectangle.height = collision_height; }
 
         void draw() {
             if (sprite) {
-                DrawRectangle(x, y, collision_rectangle.width, collision_rectangle.height, DARKGREEN);
+                DrawRectangle(x, y, width, height, color);
             }
             if (text) {
                 DrawText(text_value.c_str(), x, y, 4, RED);
@@ -90,7 +121,7 @@ class object {
 class entity : public object {
     private:
         int health;
-        int base_speed;
+        float base_speed;
 
         int current_speed = 0;
     public:
@@ -98,7 +129,7 @@ class entity : public object {
             const float x,
             const float y,
             const int health,
-            const int base_speed,
+            const float base_speed,
             const int collision_height,
             const int collision_width,
             const bool solid,
@@ -120,17 +151,18 @@ class entity : public object {
         }
 
         [[nodiscard]] int get_health() const { return health; }
-        [[nodiscard]] int get_speed() const { return base_speed; }
+        [[nodiscard]] float get_speed() const { return base_speed; }
         [[nodiscard]] bool alive() const { return health > 0; }
 
 
         void set_health(const int health) { this->health = health; }
-        void set_speed(const int speed) { this->base_speed = speed; }
+        void set_speed(const float speed) { this->base_speed = speed; }
         void damage(const int damage) { health -= damage; }
 
         // same as setting x with set_x, but with collision against solid objects
         void set_entity_x(const float x) {
-            Rectangle check_rectangle = { x, get_y(), get_collision_rectangle().width, get_collision_rectangle().height };
+            int direction = x > get_x() ? 1 : -1;
+            Rectangle check_rectangle = { get_real_x()+direction, get_real_y(), get_collision_rectangle().width, get_collision_rectangle().height };
             for (int i = 0; i < solid_count; i++) {
                 if (!CheckCollisionRecs(check_rectangle, solids[i])) {
                     set_x(x);
@@ -141,7 +173,7 @@ class entity : public object {
         // same as setting y with set_y, but with collision against solid objects
         void set_entity_y(const float y) {
             int direction = y > get_y() ? 1 : -1;
-            Rectangle check_rectangle = { get_x(), y, get_collision_rectangle().width, get_collision_rectangle().height };
+            Rectangle check_rectangle = { get_real_x(), get_real_y()+direction, get_collision_rectangle().width, get_collision_rectangle().height };
             for (int i = 0; i < solid_count; i++) {
                 if (!CheckCollisionRecs(check_rectangle, solids[i])) {
                     set_y(y);
@@ -150,6 +182,8 @@ class entity : public object {
         }
 
 };
+
+// player logic
 
 class game_player : public entity {
     private:
@@ -161,17 +195,36 @@ class game_player : public entity {
         start_postion_x,
         start_position_y,
         100,
-        1,
+        0.5,
         8,
         8,
         false,
         false
         ) {
-
+            set_color(WHITE);
         }
     void set_player_x(const float x) { set_entity_x(x); }
     void set_player_y(const float y) { set_entity_y(y); }
+
+    void update(float deltaTime) {
+        if (IsKeyDown(KEY_D)) {
+            set_player_x(get_x() + get_speed()*deltaTime);
+        }
+        if (IsKeyDown(KEY_A)) {
+            set_player_x(get_x() - get_speed()*deltaTime);
+        }
+        if (IsKeyDown(KEY_W)) {
+            set_player_y(get_y() - get_speed()*deltaTime);
+        }
+        if (IsKeyDown(KEY_S)) {
+            set_player_y(get_y() + get_speed()*deltaTime);
+        }
+    }
 };
+
+inline game_player player = game_player(150,150);
+
+// end of player logic
 
 
 #endif //OBJECTS_H

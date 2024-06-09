@@ -3,6 +3,7 @@
 #include "raylib.h"
 #include "GLFW/glfw3.h"
 #include "lib/local_lib.h"
+#include "lib/objects.h"
 
 #define MAX(a, b) ((a)>(b)? (a) : (b))
 #define MIN(a, b) ((a)<(b)? (a) : (b))
@@ -34,11 +35,12 @@ int main()
         deltaTime = GetFrameTime()*100;
         float scale = MIN((float)GetScreenWidth()/render_width, (float)GetScreenHeight()/render_height);
 
+        player.update(deltaTime);
 
         BeginTextureMode(target);
             ClearBackground(BLACK);
 
-            draw_player();
+            player.draw();
             draw_tiles();
             debug_menu();
 
@@ -46,7 +48,6 @@ int main()
 
 
     BeginDrawing();
-        update_player(deltaTime);
 
         ClearBackground(BLACK);
         DrawTexturePro(target.texture, (Rectangle){ 0.0f, 0.0f, (float)target.texture.width, (float)-target.texture.height },

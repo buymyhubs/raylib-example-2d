@@ -8,8 +8,8 @@ object tile_test = object(
     true,
     false,
     "",
-    8,
-    8,
+    16,
+    16,
     true,
     false
 );
