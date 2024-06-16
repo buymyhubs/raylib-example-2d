@@ -28,6 +28,7 @@ int main()
     const RenderTexture2D target = LoadRenderTexture(render_width, render_height);
 
     //ToggleFullscreen();
+    ToggleBorderlessWindowed();
     HideCursor();
 
     float deltaTime = 0.0f;
@@ -43,11 +44,11 @@ int main()
         deltaTime = GetFrameTime()*100;
         float scale = MIN((float)GetScreenWidth()/render_width, (float)GetScreenHeight()/render_height);
 
-        player.update_player(deltaTime);
 
         BeginDrawing();
 
             BeginTextureMode(target);
+                player.update_player(deltaTime);
                 ClearBackground(BLACK);
 
                 player.draw();
