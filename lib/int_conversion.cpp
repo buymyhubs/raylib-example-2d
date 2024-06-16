@@ -1,7 +1,18 @@
 #include <stdio.h>
+#include <string>
 
-char * int_to_string(int value) {
-    static char buffer[32];
-    sprintf(buffer, "%d", value);
-    return buffer;
+std::string int_to_string(int value) {
+    if (value == 0) {
+        return "0";
+    }
+    if (value >= 1000) {
+        return std::to_string(value / 1000.00f) + "k";
+    }
+
+    try {
+        return std::to_string(value);
+    }
+    catch (...) {
+        return "NaN";
+    }
 }

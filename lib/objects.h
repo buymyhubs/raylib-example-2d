@@ -8,8 +8,11 @@
 #include <iostream>
 
 #include "raylib.h"
+#include "check_collision.h"
 
-inline std::vector<Rectangle> solids;
+using std::string, std::vector;
+
+inline vector<Rectangle> solids;
 inline int solid_count = 0;
 
 inline int normalize(const float value) {
@@ -33,7 +36,7 @@ class object {
 
         bool sprite;
         bool text;
-        std::string text_value;
+        string text_value;
         Rectangle collision_rectangle;
 
         Color color = BLUE;
@@ -47,7 +50,7 @@ class object {
             const float y,
             const bool sprite,
             const bool text,
-            std::string text_value,
+            string text_value,
             int width,
             int height,
             bool solid,
@@ -85,7 +88,7 @@ class object {
         [[nodiscard]] float get_y() const { return y; }
         [[nodiscard]] bool get_sprite() const { return sprite; }
         [[nodiscard]] bool get_text() const { return text; }
-        std::string get_text_value() { return text_value; }
+        string get_text_value() { return text_value; }
         [[nodiscard]] Rectangle get_collision_rectangle() const { return collision_rectangle; }
 
         [[nodiscard]] int get_rendered_x() const { return rendered_x; }
@@ -104,7 +107,7 @@ class object {
         }
         void set_sprite(const bool sprite) { this->sprite = sprite; }
         void set_text(const bool text) { this->text = text; }
-        void set_text_value(const std::string& text_value) { this->text_value = text_value; }
+        void set_text_value(const string& text_value) { this->text_value = text_value; }
         void set_color(const Color color) { this->color = color; }
 
         void set_collision_rectangle_x(const float x) { this->collision_rectangle.x = x; }
@@ -167,24 +170,13 @@ class entity : public object {
         void set_entity_x(float x) {
             int direction = x > get_x() ? 1 : -1;
             Rectangle check_rectangle = { x, get_y(), get_collision_rectangle().width, get_collision_rectangle().height };
-            bool can_move = true;
-            int closest_location = 0;
-            for (int i = 0; i < solid_count; i++) {
-                if (CheckCollisionRecs(check_rectangle, solids[i])) {
-                    can_move = false;
 
-                    if (direction > 0) {
-                        closest_location = solids[i].x - get_collision_rectangle().width;
-                    } else {
-                        closest_location = solids[i].x + solids[i].width;
-                    }
-                };
-            }
+            collision_response collision_check = check_all_collision(check_rectangle, solids, direction, true);
 
-            if (can_move) {
+            if (collision_check.can_move) {
                 set_x(x);
             } else {
-                set_x(closest_location);
+                set_x(collision_check.closest_location);
             }
         }
 
@@ -192,24 +184,13 @@ class entity : public object {
         void set_entity_y(float y) {
             int direction = y > get_y() ? 1 : -1;
             Rectangle check_rectangle = { get_x(), y, get_collision_rectangle().width, get_collision_rectangle().height };
-            bool can_move = true;
-            int closest_location = 0;
-            for (int i = 0; i < solid_count; i++) {
-                if (CheckCollisionRecs(check_rectangle, solids[i])) {
-                   can_move = false;
+            collision_response collision_check = check_all_collision(check_rectangle, solids, direction, false);
 
-                    if (direction > 0) {
-                        closest_location = solids[i].y - get_collision_rectangle().height;
-                    } else {
-                        closest_location = solids[i].y + solids[i].height;
-                    }
-                };
-            }
 
-            if (can_move) {
+            if (collision_check.can_move) {
                 set_y(y);
             } else {
-                set_y(closest_location);
+                set_y(collision_check.closest_location);
             }
         }
 
@@ -227,7 +208,6 @@ class game_player : public entity {
         bool falling = false;
         bool on_ground = true;
 
-
     public: game_player(float start_postion_x, float start_position_y) : entity(
         start_postion_x,
         start_position_y,
@@ -240,49 +220,49 @@ class game_player : public entity {
         ) {
             set_color(WHITE);
         }
-    void set_player_x(const float x) { set_entity_x(x); }
-    void set_player_y(const float y) { set_entity_y(y); }
+        void set_player_x(const float x) { set_entity_x(x); }
+        void set_player_y(const float y) { set_entity_y(y); }
 
-    void check_on_ground() {
-        Rectangle check_rectangle = { get_x(), get_y()-get_collision_rectangle().height, get_collision_rectangle().width, 1 };
-        for (int i = 0; i < solid_count; i++) {
-            if (CheckCollisionRecs(check_rectangle, solids[i])) {
-                on_ground = true;
-                break;
+        void check_on_ground() {
+            Rectangle check_rectangle = { get_x(), get_y()-get_collision_rectangle().height, get_collision_rectangle().width, 1 };
+            for (int i = 0; i < solid_count; i++) {
+                if (CheckCollisionRecs(check_rectangle, solids[i])) {
+                    on_ground = true;
+                    break;
+                }
             }
-        }
-        on_ground = false;
-    }
-
-    void update_player(float deltaTime) {
-
-        if (deltaTime > 10) {
-            deltaTime = 0;
+            on_ground = false;
         }
 
-        set_player_y(get_y() + deltaTime);
+        void update_player(float deltaTime) {
 
-        if (IsKeyDown(KEY_D)) {
-            set_player_x(get_x() + get_speed()*deltaTime);
-        }
-        if (IsKeyDown(KEY_A)) {
-            set_player_x(get_x() - get_speed()*deltaTime);
-        }
+            if (deltaTime > 10) {
+                deltaTime = 0;
+            }
 
-        if (IsKeyPressed(KEY_SPACE) && on_ground) {
-            y_velocity = -3.0f;
-            jumping = true;
-        }
+            set_player_y(get_y() + deltaTime);
 
-        if (y_velocity < 0.0f) {
-            set_player_y(get_y() + y_velocity*deltaTime);
-            y_velocity += 0.1f*deltaTime;
-        } else {
-            y_velocity = 0.0f;
-            falling = true;
-        }
+            if (IsKeyDown(KEY_D)) {
+                set_player_x(get_x() + get_speed()*deltaTime);
+            }
+            if (IsKeyDown(KEY_A)) {
+                set_player_x(get_x() - get_speed()*deltaTime);
+            }
 
-    }
+            if (IsKeyPressed(KEY_SPACE) && on_ground) {
+                y_velocity = -3.0f;
+                jumping = true;
+            }
+
+            if (y_velocity < 0.0f) {
+                set_player_y(get_y() + y_velocity*deltaTime);
+                y_velocity += 0.1f*deltaTime;
+            } else {
+                y_velocity = 0.0f;
+                falling = true;
+            }
+
+        }
 };
 
 inline game_player player = game_player(100,50);

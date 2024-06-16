@@ -1,10 +1,13 @@
 #ifndef LOCAL_LIB_H
 #define LOCAL_LIB_H
 #include <stdbool.h>
+#include <string>
 
-char * float_to_string(float value);
+using std::string;
 
-char * int_to_string(int value);
+string float_to_string(float value);
+
+string int_to_string(int value);
 
 void debug_menu();
 

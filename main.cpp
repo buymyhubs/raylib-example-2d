@@ -4,6 +4,7 @@
 #include "GLFW/glfw3.h"
 #include "lib/local_lib.h"
 #include "lib/objects.h"
+#include "lib/scene_constructor.h"
 
 #define MAX(a, b) ((a)>(b)? (a) : (b))
 #define MIN(a, b) ((a)<(b)? (a) : (b))
@@ -35,6 +36,7 @@ int main()
 
     SetWindowState(FLAG_WINDOW_RESIZABLE);
 
+    scene.load_scene();
 
     while (!WindowShouldClose())
     {
@@ -49,13 +51,14 @@ int main()
                 ClearBackground(BLACK);
 
                 player.draw();
-                draw_tiles();
-                debug_menu();
+                scene.draw_scene();
             EndTextureMode();
             ClearBackground(BLACK);
             DrawTexturePro(target.texture, (Rectangle){ 0.0f, 0.0f, (float)target.texture.width, (float)-target.texture.height },
                                (Rectangle){ (GetScreenWidth() - ((float)render_width*scale))*0.5f, (GetScreenHeight() - ((float)render_height*scale))*0.5f,
                                (float)render_width*scale, (float)render_height*scale }, (Vector2){ 0, 0 }, 0.0f, WHITE);
+
+            debug_menu();
         EndDrawing();
 }
 
