@@ -26,7 +26,7 @@ collision_response check_all_collision(Rectangle check_rectangle, vector<Rectang
     vector<Rectangle> checkable_solids = solids;
     int checkable_solids_count = solid_count;
 
-    int collision_point_index = pixel_location_to_collision_index(check_rectangle.x, check_rectangle.y);
+    int collision_point_index = pixel_location_to_collision_index(normalize(check_rectangle.x/8)*8, normalize(check_rectangle.y/8)*8);
 
     Rectangle tile_collider_rectangle = check_rectangle;
 
