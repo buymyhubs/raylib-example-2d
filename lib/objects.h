@@ -236,9 +236,7 @@ class game_player : public entity {
 
         void update_player(float deltaTime) {
 
-            if (deltaTime > 10) {
-                deltaTime = 0;
-            }
+
 
             set_player_y(get_y() + deltaTime);
 

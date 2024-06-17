@@ -32,6 +32,7 @@ collision_response check_all_collision(Rectangle check_rectangle, vector<Rectang
     int checkable_tile_middle_index;
     vector<int> checkable_tile_indexes = vector<int>();
 
+    // this is a mess <3
     if (x_axis) {
         if (direction > 0) {
             checkable_tile_middle_index = pixel_location_to_collision_index(check_middle[0]+check_rectangle.width, check_middle[1]);
@@ -52,6 +53,7 @@ collision_response check_all_collision(Rectangle check_rectangle, vector<Rectang
         checkable_tile_indexes.push_back(checkable_tile_middle_index-1);
     }
 
+    // can't believe this shit worked
     for (int i = 0; i < checkable_tile_indexes.size(); i++) {
         if (checkable_tiles_collision[checkable_tile_indexes[i]]) {
             vector<int> pixel_location = collision_index_to_pixel_location(checkable_tile_indexes[i]);
@@ -60,9 +62,6 @@ collision_response check_all_collision(Rectangle check_rectangle, vector<Rectang
             checkable_solids_count++;
         }
     }
-
-
-
 
     for (int i = 0; i < checkable_solids_count; i++) {
         DrawRectangleRec(checkable_solids[i], RED);

@@ -42,6 +42,10 @@ int main()
     while (!WindowShouldClose())
     {
         deltaTime = GetFrameTime()*100;
+
+        if (deltaTime > 5) {
+            deltaTime = 0;
+        }
         float scale = MIN((float)GetScreenWidth()/render_width, (float)GetScreenHeight()/render_height);
 
 
