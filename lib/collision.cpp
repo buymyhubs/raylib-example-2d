@@ -25,10 +25,16 @@ collision_response check_all_collision(Rectangle check_rectangle, vector<Rectang
     vector<bool> checkable_tiles_collision = scene.get_scene_collision();
     vector<Rectangle> checkable_solids = solids;
     int checkable_solids_count = solid_count;
+    int collision_line_length = scene.get_collision_line_length();
 
-    int collision_point_index = pixel_location_to_collision_index(normalize(check_rectangle.x/8)*8, normalize(check_rectangle.y/8)*8);
+    float collision_point_index = pixel_location_to_collision_index(normalize(check_rectangle.x/8)*8, normalize(check_rectangle.y/8)*8);
+    float left_collision_point_index = pixel_location_to_collision_index(check_rectangle.x, normalize(check_rectangle.y/8)*8);
+    float x_right_point = check_rectangle.x+check_rectangle.width;
+    float right_collision_point_index = pixel_location_to_collision_index(x_right_point-1, check_rectangle.y);
 
     Rectangle tile_collider_rectangle = check_rectangle;
+
+    int collision_axis_rounding_correction = 0;
 
     if (x_axis) {
         if (direction > 0) {
@@ -46,13 +52,13 @@ collision_response check_all_collision(Rectangle check_rectangle, vector<Rectang
         }
     } else {
         if (direction > 0) {
-            if (checkable_tiles_collision[collision_point_index+scene.get_collision_line_length()]) {
+            if (checkable_tiles_collision[left_collision_point_index + collision_line_length] || checkable_tiles_collision[right_collision_point_index + collision_line_length]) {
                 tile_collider_rectangle.y = collision_index_to_pixel_location(collision_point_index+scene.get_collision_line_length())[1];
                 checkable_solids.push_back(tile_collider_rectangle);
                 checkable_solids_count++;
             }
         } else if (direction < 0) {
-            if (checkable_tiles_collision[collision_point_index-scene.get_collision_line_length()]) {
+            if (checkable_tiles_collision[collision_point_index - collision_line_length]) {
                 tile_collider_rectangle.y = collision_index_to_pixel_location(collision_point_index-scene.get_collision_line_length())[1];
                 checkable_solids.push_back(tile_collider_rectangle);
                 checkable_solids_count++;
@@ -73,37 +79,6 @@ collision_response check_all_collision(Rectangle check_rectangle, vector<Rectang
         };
     }
 
-    // check against scene collision
-    // vector<vector<float>> check_points = { { check_rectangle.x, check_rectangle.y }, {check_rectangle.x+check_rectangle.width, check_rectangle.y}, {check_rectangle.x, check_rectangle.y+check_rectangle.height}, {check_rectangle.x+check_rectangle.width, check_rectangle.y+check_rectangle.height} };
-    // for (int i = 0; i < 4; i++) {
-    //     vector<int> equivalent_collision_point = {static_cast<int>(check_points[i][0]/8), static_cast<int>(check_points[i][1]/8)};
-    //     int collision_line_length = scene.get_collision_line_length();
-    //     vector<bool> scene_collision = scene.get_scene_collision();
-    //     int collision_check_index = equivalent_collision_point[1] * scene.get_collision_line_length() + equivalent_collision_point[0];
-    //
-    //     bool solid_at_point = scene_collision[collision_check_index];
-    //
-    //     if (solid_at_point) {
-    //         can_move = false;
-    //         if (!x_axis) {
-    //             // map index back to nearest pixel
-    //             if (direction > 0) {
-    //                 closest_location = (equivalent_collision_point[1] * 8) - check_rectangle.height;
-    //             } else {
-    //                 closest_location = (equivalent_collision_point[1] * 8) + check_rectangle.height;
-    //             }
-    //         } else {
-    //             if (direction > 0) {
-    //                 closest_location = (equivalent_collision_point[0] * 8) - check_rectangle.width;
-    //             } else {
-    //                 closest_location = (equivalent_collision_point[0] * 8) + check_rectangle.width;
-    //             }
-    //         }
-    //     }
-    // }
-
-
     return {can_move, closest_location};
-
 }
 
