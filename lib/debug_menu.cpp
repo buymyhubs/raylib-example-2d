@@ -11,13 +11,12 @@ using std::string;
 using std::vector;
 
 
-
 void debug_menu() {
     vector<string> debug_menu_text = vector<string>();
 
 
     debug_menu_text.push_back(int_to_string(GetFPS()) + " FPS");
-    debug_menu_text.push_back(float_to_string(GetFrameTime()*100) + " delta_time");
+    debug_menu_text.push_back(float_to_string(GetFrameTime() * 100) + " delta_time");
     debug_menu_text.push_back("x: " + float_to_string(player.get_x()));
     debug_menu_text.push_back("y: " + float_to_string(player.get_y()));
     debug_menu_text.push_back("render_x: " + int_to_string(player.get_rendered_x()));
@@ -48,8 +47,6 @@ void debug_menu() {
     debug_menu_text.push_back("controls_pressed: " + keys_pressed_string);
 
     for (int i = 0; i < debug_menu_text.size(); i++) {
-        DrawText(debug_menu_text[i].c_str(), 4, 4+(i*24), 24, WHITE);
+        DrawText(debug_menu_text[i].c_str(), 4, 4 + (i * 24), 24, WHITE);
     }
-
-
 }

@@ -11,8 +11,7 @@
 
 using namespace std;
 
-int main()
-{
+int main() {
     // int window_width = GetScreenWidth();
     // int window_height = GetScreenHeight();
 
@@ -39,9 +38,8 @@ int main()
 
     scene.load_scene();
 
-    while (!WindowShouldClose())
-    {
-        deltaTime = GetFrameTime()*100;
+    while (!WindowShouldClose()) {
+        deltaTime = GetFrameTime() * 100;
 
         if (deltaTime > 5) {
             deltaTime = 0;
@@ -51,21 +49,25 @@ int main()
 
         BeginDrawing();
 
-            BeginTextureMode(target);
-                player.update_player(deltaTime);
-                ClearBackground(BLACK);
+        BeginTextureMode(target);
+        player.update_player(deltaTime);
+        ClearBackground(BLACK);
 
-                player.draw();
-                scene.draw_scene();
-            EndTextureMode();
-            ClearBackground(BLACK);
-            DrawTexturePro(target.texture, (Rectangle){ 0.0f, 0.0f, (float)target.texture.width, (float)-target.texture.height },
-                               (Rectangle){ (GetScreenWidth() - ((float)render_width*scale))*0.5f, (GetScreenHeight() - ((float)render_height*scale))*0.5f,
-                               (float)render_width*scale, (float)render_height*scale }, (Vector2){ 0, 0 }, 0.0f, WHITE);
+        player.draw();
+        scene.draw_scene();
+        EndTextureMode();
+        ClearBackground(BLACK);
+        DrawTexturePro(target.texture,
+                       (Rectangle){0.0f, 0.0f, (float) target.texture.width, (float) -target.texture.height},
+                       (Rectangle){
+                           (GetScreenWidth() - ((float) render_width * scale)) * 0.5f,
+                           (GetScreenHeight() - ((float) render_height * scale)) * 0.5f,
+                           (float) render_width * scale, (float) render_height * scale
+                       }, (Vector2){0, 0}, 0.0f, WHITE);
 
-            debug_menu();
+        debug_menu();
         EndDrawing();
-}
+    }
 
     CloseWindow();
 

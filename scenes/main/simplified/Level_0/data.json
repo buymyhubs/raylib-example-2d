@@ -1,15 +1,15 @@
 {
-	"identifier": "Level_0",
-	"uniqueIdentifer": "c655ae90-25d0-11ef-b204-97f219a125f0",
-	"x": 0,
-	"y": 0,
-	"width": 320,
-	"height": 240,
-	"bgColor": "#696A79",
-	"neighbourLevels": [],
-	"customFields" : {},
-	"layers": [
-		"Debug_tiles.png"
-	],
-	"entities" : {}
+  "identifier": "Level_0",
+  "uniqueIdentifer": "c655ae90-25d0-11ef-b204-97f219a125f0",
+  "x": 0,
+  "y": 0,
+  "width": 320,
+  "height": 240,
+  "bgColor": "#696A79",
+  "neighbourLevels": [],
+  "customFields": {},
+  "layers": [
+    "Debug_tiles.png"
+  ],
+  "entities": {}
 }

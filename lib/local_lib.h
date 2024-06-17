@@ -14,6 +14,7 @@ void debug_menu();
 void update_player(float deltaTime);
 
 void draw_player();
+
 void draw_tiles();
 
 #endif //LOCAL_LIB_H
