@@ -31,7 +31,6 @@ add_executable(${PROJECT_NAME} main.cpp
         lib/float_conversion.cpp
         lib/int_conversion.cpp
         lib/objects.h
-        tiles.cpp
         lib/scene_constructor.h
         lib/check_collision.h
         lib/collision.cpp

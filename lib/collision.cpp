@@ -1,7 +1,5 @@
 
 #include <vector>
-#include <_xlocale.h>
-#include <_xlocale.h>
 
 #include "objects.h"
 #include "raylib.h"
