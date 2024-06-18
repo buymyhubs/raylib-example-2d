@@ -8,6 +8,6 @@ struct collision_response {
 };
 
 
-collision_response check_all_collision(Rectangle, std::vector<Rectangle>, int, bool);
+collision_response check_all_collision(Rectangle, const std::vector<Rectangle> &, int, bool);
 
 #endif //CHECK_COLLISION_H

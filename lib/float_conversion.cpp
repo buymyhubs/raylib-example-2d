@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string>
 
-std::string float_to_string(float value) {
+std::string float_to_string(const float value) {
     if (value == 0.00f) {
         return "0";
     }
@@ -11,8 +11,7 @@ std::string float_to_string(float value) {
 
     try {
         return std::to_string(value);
-    }
-    catch (...) {
+    } catch (...) {
         return "NaN";
     }
 }

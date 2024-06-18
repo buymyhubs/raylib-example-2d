@@ -8,18 +8,19 @@
 using std::vector;
 
 
-int pixel_location_to_collision_index(int x, int y) {
+int pixel_location_to_collision_index(const int x, const int y) {
     return (y / 8) * scene.get_collision_line_length() + (x / 8);
 }
 
-vector<int> collision_index_to_pixel_location(int index) {
+vector<int> collision_index_to_pixel_location(const int index) {
     int x = index % scene.get_collision_line_length();
     int y = index / scene.get_collision_line_length();
     return vector<int>{x * 8, y * 8};
 }
 
-collision_response check_all_collision(Rectangle check_rectangle, vector<Rectangle> solids, int direction,
-                                       bool x_axis) {
+collision_response check_all_collision(const Rectangle check_rectangle, const vector<Rectangle> &solids,
+                                       const int direction,
+                                       const bool x_axis) {
     bool can_move = true;
     int closest_location = 0;
     vector<bool> checkable_tiles_collision = scene.get_scene_collision();
@@ -59,9 +60,9 @@ collision_response check_all_collision(Rectangle check_rectangle, vector<Rectang
     }
 
     // can't believe this shit worked
-    for (int i = 0; i < checkable_tile_indexes.size(); i++) {
-        if (checkable_tiles_collision[checkable_tile_indexes[i]]) {
-            vector<int> pixel_location = collision_index_to_pixel_location(checkable_tile_indexes[i]);
+    for (int checkable_tile_index: checkable_tile_indexes) {
+        if (checkable_tiles_collision[checkable_tile_index]) {
+            vector<int> pixel_location = collision_index_to_pixel_location(checkable_tile_index);
             Rectangle checkable_tile = {(float) pixel_location[0], (float) pixel_location[1], 8, 8};
             checkable_solids.push_back(checkable_tile);
             checkable_solids_count++;

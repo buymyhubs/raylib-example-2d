@@ -247,7 +247,7 @@ public:
         }
 
         if (IsKeyPressed(KEY_SPACE) && on_ground) {
-            y_velocity = -3.0f;
+            y_velocity = -3.5f;
             jumping = true;
         }
 

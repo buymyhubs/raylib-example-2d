@@ -12,7 +12,7 @@ using std::vector;
 
 
 void debug_menu() {
-    vector<string> debug_menu_text = vector<string>();
+    auto debug_menu_text = vector<string>();
 
 
     debug_menu_text.push_back(int_to_string(GetFPS()) + " FPS");

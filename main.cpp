@@ -15,11 +15,11 @@ int main() {
     // int window_width = GetScreenWidth();
     // int window_height = GetScreenHeight();
 
-    int window_width = 1280;
-    int window_height = 960;
+    constexpr int window_width = 1280;
+    constexpr int window_height = 960;
 
-    int render_width = 320;
-    int render_height = 240;
+    constexpr int render_width = 320;
+    constexpr int render_height = 240;
 
 
     InitWindow(window_width, window_height, "debug");
@@ -44,7 +44,7 @@ int main() {
         if (deltaTime > 5) {
             deltaTime = 0;
         }
-        float scale = MIN((float)GetScreenWidth()/render_width, (float)GetScreenHeight()/render_height);
+        const float scale = MIN((float)GetScreenWidth()/render_width, (float)GetScreenHeight()/render_height);
 
 
         BeginDrawing();

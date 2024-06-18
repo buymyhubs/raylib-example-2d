@@ -1,7 +1,6 @@
-#include <stdio.h>
 #include <string>
 
-std::string int_to_string(int value) {
+std::string int_to_string(const int value) {
     if (value == 0) {
         return "0";
     }
@@ -11,8 +10,7 @@ std::string int_to_string(int value) {
 
     try {
         return std::to_string(value);
-    }
-    catch (...) {
+    } catch (...) {
         return "NaN";
     }
 }
