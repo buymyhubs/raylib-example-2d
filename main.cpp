@@ -26,7 +26,7 @@ int main() {
 
     const RenderTexture2D target = LoadRenderTexture(render_width, render_height);
 
-    //ToggleFullscreen();
+    // ToggleFullscreen();
     // ToggleBorderlessWindowed();
     HideCursor();
 
