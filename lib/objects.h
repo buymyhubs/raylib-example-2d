@@ -63,12 +63,12 @@ public:
         this->width = width;
         this->height = height;
 
-        this->collision_width = width;
-        this->collision_height = height;
+        this->collision_width = static_cast<float>(width);
+        this->collision_height = static_cast<float>(height);
 
         this->sprite = sprite;
         this->text = text;
-        this->text_value = std::move(text_value);
+        this->text_value = move(text_value);
 
         this->collision_rectangle.x = x;
         this->collision_rectangle.y = y;
@@ -94,14 +94,14 @@ public:
 
     void set_x(const float x_new) {
         this->x = x_new;
-        set_collision_rectangle_x(x);
-        this->rendered_x = normalize(x);
+        set_collision_rectangle_x(x_new);
+        this->rendered_x = normalize(x_new);
     }
 
     void set_y(const float y_new) {
         this->y = y_new;
-        set_collision_rectangle_y(y);
-        this->rendered_y = normalize(y);
+        set_collision_rectangle_y(y_new);
+        this->rendered_y = normalize(y_new);
     }
 
     void set_sprite(const bool sprite) { this->sprite = sprite; }
@@ -119,7 +119,7 @@ public:
             DrawRectangle(rendered_x, rendered_y, width, height, color);
         }
         if (text) {
-            DrawText(text_value.c_str(), x, y, 4, RED);
+            DrawText(text_value.c_str(), static_cast<int>(x), static_cast<int>(y), 4, RED);
         }
     }
 };
@@ -176,7 +176,7 @@ public:
             can_move) {
             set_x(x);
         } else {
-            set_x(closest_location);
+            set_x(static_cast<float>(closest_location));
         }
     }
 
@@ -192,7 +192,7 @@ public:
             can_move) {
             set_y(y);
         } else {
-            set_y(closest_location);
+            set_y(static_cast<float>(closest_location));
         }
     }
 };

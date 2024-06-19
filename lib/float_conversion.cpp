@@ -7,4 +7,3 @@ std::string float_to_string(const float value) {
         return "NaN";
     }
 }
-

@@ -27,8 +27,6 @@ int main() {
     // ToggleBorderlessWindowed();
     HideCursor();
 
-    float deltaTime = 0.0f;
-
     SetTargetFPS(10000);
 
     SetWindowState(FLAG_WINDOW_RESIZABLE);
@@ -36,7 +34,7 @@ int main() {
     scene.load_scene();
 
     while (!WindowShouldClose()) {
-        deltaTime = GetFrameTime() * 100;
+        float deltaTime = GetFrameTime() * 100;
 
         if (deltaTime > 5) {
             deltaTime = 0;
@@ -60,8 +58,8 @@ int main() {
                            static_cast<float>(-target.texture.height)
                        },
                        (Rectangle){
-                           (GetScreenWidth() - (static_cast<float>(render_width) * scale)) * 0.5f,
-                           (GetScreenHeight() - (static_cast<float>(render_height) * scale)) * 0.5f,
+                           (static_cast<float>(GetScreenWidth()) - (static_cast<float>(render_width) * scale)) * 0.5f,
+                           (static_cast<float>(GetScreenHeight()) - (static_cast<float>(render_height) * scale)) * 0.5f,
                            static_cast<float>(render_width) * scale, static_cast<float>(render_height) * scale
                        }, (Vector2){0, 0}, 0.0f, WHITE);
 

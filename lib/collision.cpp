@@ -27,7 +27,7 @@ collision_response check_all_collision(const Rectangle check_rectangle, const ve
     int checkable_solids_count = solid_count;
     const int collision_line_length = scene.get_collision_line_length();
     const auto check_middle = vector{
-        check_rectangle.x + check_rectangle.width / 2, check_rectangle.y + check_rectangle.height / 2
+        static_cast<int>(check_rectangle.x) + static_cast<int>(check_rectangle.width) / 2, static_cast<int>(check_rectangle.y) + static_cast<int>(check_rectangle.height) / 2
     };
 
     int checkable_tile_middle_index;
@@ -37,10 +37,10 @@ collision_response check_all_collision(const Rectangle check_rectangle, const ve
     if (x_axis) {
         if (direction > 0) {
             checkable_tile_middle_index = pixel_location_to_collision_index(
-                check_middle[0] + check_rectangle.width, check_middle[1]);
+                check_middle[0] + static_cast<int>(check_rectangle.width), check_middle[1]);
         } else {
             checkable_tile_middle_index = pixel_location_to_collision_index(
-                check_middle[0] - check_rectangle.width, check_middle[1]);
+                check_middle[0] - static_cast<int>(check_rectangle.width), check_middle[1]);
         }
         checkable_tile_indexes.push_back(checkable_tile_middle_index);
         checkable_tile_indexes.push_back(checkable_tile_middle_index + collision_line_length);
@@ -48,10 +48,10 @@ collision_response check_all_collision(const Rectangle check_rectangle, const ve
     } else {
         if (direction > 0) {
             checkable_tile_middle_index = pixel_location_to_collision_index(
-                check_middle[0], check_middle[1] + check_rectangle.height);
+                check_middle[0], check_middle[1] + static_cast<int>(check_rectangle.height));
         } else {
             checkable_tile_middle_index = pixel_location_to_collision_index(
-                check_middle[0], check_middle[1] - check_rectangle.height);
+                check_middle[0], check_middle[1] - static_cast<int>(check_rectangle.height));
         }
         checkable_tile_indexes.push_back(checkable_tile_middle_index);
         checkable_tile_indexes.push_back(checkable_tile_middle_index + 1);
@@ -77,12 +77,12 @@ collision_response check_all_collision(const Rectangle check_rectangle, const ve
 
             if (direction > 0) {
                 closest_location = x_axis
-                                       ? checkable_solids[i].x - check_rectangle.width
-                                       : checkable_solids[i].y - check_rectangle.height;
+                                       ? static_cast<int>(checkable_solids[i].x) - static_cast<int>(check_rectangle.width)
+                                       : static_cast<int>(checkable_solids[i].y) - static_cast<int>(check_rectangle.height);
             } else {
                 closest_location = x_axis
-                                       ? checkable_solids[i].x + checkable_solids[i].width
-                                       : checkable_solids[i].y + checkable_solids[i].height;
+                                       ? static_cast<int>(checkable_solids[i].x) + static_cast<int>(checkable_solids[i].width)
+                                       : static_cast<int>(checkable_solids[i].y) + static_cast<int>(checkable_solids[i].height);
             }
         };
     }
