@@ -29,7 +29,7 @@ int main() {
 
     float deltaTime = 0.0f;
 
-    SetTargetFPS(60);
+    SetTargetFPS(10000);
 
     SetWindowState(FLAG_WINDOW_RESIZABLE);
 
@@ -55,7 +55,10 @@ int main() {
         EndTextureMode();
         ClearBackground(BLACK);
         DrawTexturePro(target.texture,
-                       (Rectangle){0.0f, 0.0f, static_cast<float>(target.texture.width), static_cast<float>(-target.texture.height)},
+                       (Rectangle){
+                           0.0f, 0.0f, static_cast<float>(target.texture.width),
+                           static_cast<float>(-target.texture.height)
+                       },
                        (Rectangle){
                            (GetScreenWidth() - (static_cast<float>(render_width) * scale)) * 0.5f,
                            (GetScreenHeight() - (static_cast<float>(render_height) * scale)) * 0.5f,

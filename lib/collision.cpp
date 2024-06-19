@@ -62,7 +62,9 @@ collision_response check_all_collision(const Rectangle check_rectangle, const ve
     for (const int checkable_tile_index: checkable_tile_indexes) {
         if (checkable_tiles_collision[checkable_tile_index]) {
             vector<int> pixel_location = collision_index_to_pixel_location(checkable_tile_index);
-            Rectangle checkable_tile = {static_cast<float>(pixel_location[0]), static_cast<float>(pixel_location[1]), 8, 8};
+            Rectangle checkable_tile = {
+                static_cast<float>(pixel_location[0]), static_cast<float>(pixel_location[1]), 8, 8
+            };
             checkable_solids.push_back(checkable_tile);
             checkable_solids_count++;
         }
