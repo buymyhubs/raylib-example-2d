@@ -27,7 +27,8 @@ collision_response check_all_collision(const Rectangle check_rectangle, const ve
     int checkable_solids_count = solid_count;
     const int collision_line_length = scene.get_collision_line_length();
     const auto check_middle = vector{
-        static_cast<int>(check_rectangle.x) + static_cast<int>(check_rectangle.width) / 2, static_cast<int>(check_rectangle.y) + static_cast<int>(check_rectangle.height) / 2
+        static_cast<int>(check_rectangle.x) + static_cast<int>(check_rectangle.width) / 2,
+        static_cast<int>(check_rectangle.y) + static_cast<int>(check_rectangle.height) / 2
     };
 
     int checkable_tile_middle_index;
@@ -77,12 +78,16 @@ collision_response check_all_collision(const Rectangle check_rectangle, const ve
 
             if (direction > 0) {
                 closest_location = x_axis
-                                       ? static_cast<int>(checkable_solids[i].x) - static_cast<int>(check_rectangle.width)
-                                       : static_cast<int>(checkable_solids[i].y) - static_cast<int>(check_rectangle.height);
+                                       ? static_cast<int>(checkable_solids[i].x) - static_cast<int>(check_rectangle.
+                                             width)
+                                       : static_cast<int>(checkable_solids[i].y) - static_cast<int>(check_rectangle.
+                                             height);
             } else {
                 closest_location = x_axis
-                                       ? static_cast<int>(checkable_solids[i].x) + static_cast<int>(checkable_solids[i].width)
-                                       : static_cast<int>(checkable_solids[i].y) + static_cast<int>(checkable_solids[i].height);
+                                       ? static_cast<int>(checkable_solids[i].x) + static_cast<int>(checkable_solids[i].
+                                             width)
+                                       : static_cast<int>(checkable_solids[i].y) + static_cast<int>(checkable_solids[i].
+                                             height);
             }
         };
     }
