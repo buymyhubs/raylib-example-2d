@@ -1,7 +1,3 @@
-#include <stdio.h>
-#include <string.h>
-#include <map>
-
 #include "raylib.h"
 #include "local_lib.h"
 

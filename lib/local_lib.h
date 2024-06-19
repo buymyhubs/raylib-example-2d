@@ -1,6 +1,5 @@
 #ifndef LOCAL_LIB_H
 #define LOCAL_LIB_H
-#include <stdbool.h>
 #include <string>
 
 using std::string;

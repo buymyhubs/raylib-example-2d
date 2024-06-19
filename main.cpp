@@ -1,7 +1,4 @@
-#include <stdio.h>
-
 #include "raylib.h"
-#include "GLFW/glfw3.h"
 #include "lib/local_lib.h"
 #include "lib/objects.h"
 #include "lib/scene_constructor.h"
@@ -58,11 +55,11 @@ int main() {
         EndTextureMode();
         ClearBackground(BLACK);
         DrawTexturePro(target.texture,
-                       (Rectangle){0.0f, 0.0f, (float) target.texture.width, (float) -target.texture.height},
+                       (Rectangle){0.0f, 0.0f, static_cast<float>(target.texture.width), static_cast<float>(-target.texture.height)},
                        (Rectangle){
-                           (GetScreenWidth() - ((float) render_width * scale)) * 0.5f,
-                           (GetScreenHeight() - ((float) render_height * scale)) * 0.5f,
-                           (float) render_width * scale, (float) render_height * scale
+                           (GetScreenWidth() - (static_cast<float>(render_width) * scale)) * 0.5f,
+                           (GetScreenHeight() - (static_cast<float>(render_height) * scale)) * 0.5f,
+                           static_cast<float>(render_width) * scale, static_cast<float>(render_height) * scale
                        }, (Vector2){0, 0}, 0.0f, WHITE);
 
         debug_menu();

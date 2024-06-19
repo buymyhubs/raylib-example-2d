@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <string>
 
 std::string float_to_string(const float value) {

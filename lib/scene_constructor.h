@@ -19,18 +19,19 @@ inline map<scene, string> scene_names = {
 
 
 class scene_manager {
-    scene current_scene = DEBUG_LEVEL;
-    string scene_directory = "../scenes/main/simplified/" + scene_names[current_scene]+"/";
-    vector<Texture2D> scene_textures = vector<Texture2D>();
-    vector<bool> scene_collision = vector<bool>();
-    int collision_line_length = 0;
+    private:
+        scene current_scene = DEBUG_LEVEL;
+        string scene_directory = "../scenes/main/simplified/" + scene_names[current_scene]+"/";
+        vector<Texture2D> scene_textures = vector<Texture2D>();
+        vector<bool> scene_collision = vector<bool>();
+        int collision_line_length = 0;
 
 
     public: scene_manager() {
             set_scene_index(DEBUG_LEVEL);
         }
 
-        scene get_current_scene_index() {
+        [[nodiscard]] scene get_current_scene_index() const {
             return current_scene;
         }
 
@@ -42,7 +43,7 @@ class scene_manager {
             return scene_collision;
         }
 
-        void set_scene_index(scene scene) {
+        void set_scene_index(const scene scene) {
             string scene_directory = "../scenes/main/simplified/" + scene_names[scene]+"/";
             current_scene = scene;
         }
@@ -58,13 +59,13 @@ class scene_manager {
 
             bool get_collision_line_length = true;
             while (std::getline(file, line, ',')) {
-                if (line.find("1") != std::string::npos) {
+                if (line.find('1') != std::string::npos) {
                     scene_collision.push_back(true);
-                } else if (line.find("0") != std::string::npos) {
+                } else if (line.find('0') != std::string::npos) {
                     scene_collision.push_back(false);
                 }
 
-                if (line.find("\n") != std::string::npos) {
+                if (line.find('\n') != std::string::npos) {
                     get_collision_line_length = false;
                 }
 
@@ -83,6 +84,6 @@ class scene_manager {
         }
 };
 
-inline scene_manager scene = scene_manager();
+inline auto scene = scene_manager();
 
 #endif //SCENE_CONSTRUCTOR_H

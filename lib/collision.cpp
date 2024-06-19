@@ -1,4 +1,3 @@
-
 #include <vector>
 
 #include "objects.h"
@@ -13,8 +12,8 @@ int pixel_location_to_collision_index(const int x, const int y) {
 }
 
 vector<int> collision_index_to_pixel_location(const int index) {
-    int x = index % scene.get_collision_line_length();
-    int y = index / scene.get_collision_line_length();
+    const int x = index % scene.get_collision_line_length();
+    const int y = index / scene.get_collision_line_length();
     return vector<int>{x * 8, y * 8};
 }
 
@@ -26,13 +25,13 @@ collision_response check_all_collision(const Rectangle check_rectangle, const ve
     vector<bool> checkable_tiles_collision = scene.get_scene_collision();
     vector<Rectangle> checkable_solids = solids;
     int checkable_solids_count = solid_count;
-    int collision_line_length = scene.get_collision_line_length();
-    vector<float> check_middle = vector<float>{
+    const int collision_line_length = scene.get_collision_line_length();
+    const auto check_middle = vector{
         check_rectangle.x + check_rectangle.width / 2, check_rectangle.y + check_rectangle.height / 2
     };
 
     int checkable_tile_middle_index;
-    vector<int> checkable_tile_indexes = vector<int>();
+    auto checkable_tile_indexes = vector<int>();
 
     // this is a mess <3
     if (x_axis) {
@@ -60,10 +59,10 @@ collision_response check_all_collision(const Rectangle check_rectangle, const ve
     }
 
     // can't believe this shit worked
-    for (int checkable_tile_index: checkable_tile_indexes) {
+    for (const int checkable_tile_index: checkable_tile_indexes) {
         if (checkable_tiles_collision[checkable_tile_index]) {
             vector<int> pixel_location = collision_index_to_pixel_location(checkable_tile_index);
-            Rectangle checkable_tile = {(float) pixel_location[0], (float) pixel_location[1], 8, 8};
+            Rectangle checkable_tile = {static_cast<float>(pixel_location[0]), static_cast<float>(pixel_location[1]), 8, 8};
             checkable_solids.push_back(checkable_tile);
             checkable_solids_count++;
         }
