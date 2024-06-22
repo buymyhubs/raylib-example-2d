@@ -35,6 +35,7 @@ add_executable(${PROJECT_NAME} main.cpp
         lib/scene_constructor.h
         lib/check_collision.h
         lib/collision.cpp
+        lib/camera.h
 )
 #set(raylib_VERBOSE 1)
 target_link_libraries(${PROJECT_NAME} raylib)

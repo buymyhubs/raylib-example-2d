@@ -42,6 +42,8 @@ private:
 
     int solid_collision_index;
 
+    vector<int> screen = {0, 0};
+
 public:
     object(
         const float x,
@@ -96,12 +98,14 @@ public:
         this->x = x_new;
         set_collision_rectangle_x(x_new);
         this->rendered_x = normalize(x_new);
+        this->screen[0] = static_cast<int>(x) / 320;
     }
 
     void set_y(const float y_new) {
         this->y = y_new;
         set_collision_rectangle_y(y_new);
         this->rendered_y = normalize(y_new);
+        this->screen[1] = static_cast<int>(y) / 240;
     }
 
     void set_sprite(const bool sprite) { this->sprite = sprite; }
@@ -122,6 +126,12 @@ public:
             DrawText(text_value.c_str(), static_cast<int>(x), static_cast<int>(y), 4, RED);
         }
     }
+
+    int get_screen_x() const { return screen[0]; }
+    int get_screen_y() const { return screen[1]; }
+
+    int get_screen_x_coordinate() const { return screen[0] * 320; }
+    int get_screen_y_coordinate() const { return screen[1] * 240; }
 };
 
 class entity : public object {

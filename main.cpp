@@ -1,4 +1,5 @@
 #include "raylib.h"
+#include "lib/camera.h"
 #include "lib/local_lib.h"
 #include "lib/objects.h"
 #include "lib/scene_constructor.h"
@@ -27,11 +28,14 @@ int main() {
     // ToggleBorderlessWindowed();
     HideCursor();
 
-    SetTargetFPS(10000);
+    SetTargetFPS(60);
 
     SetWindowState(FLAG_WINDOW_RESIZABLE);
 
     scene.load_scene();
+
+
+    game_camera camera = game_camera();
 
     while (!WindowShouldClose()) {
         float deltaTime = GetFrameTime() * 100;
@@ -41,15 +45,18 @@ int main() {
         }
         const float scale = MIN((float)GetScreenWidth()/render_width, (float)GetScreenHeight()/render_height);
 
+        camera.update_camera(deltaTime);
 
         BeginDrawing();
 
         BeginTextureMode(target);
+        BeginMode2D(camera.get_inner_object());
         player.update_player(deltaTime);
         ClearBackground(BLACK);
 
         player.draw();
         scene.draw_scene();
+        EndMode2D();
         EndTextureMode();
         ClearBackground(BLACK);
         DrawTexturePro(target.texture,
