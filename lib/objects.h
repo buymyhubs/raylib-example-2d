@@ -38,7 +38,7 @@ private:
     string text_value;
     Rectangle collision_rectangle{};
 
-    Color color = BLUE;
+    Color color = WHITE;
 
     int solid_collision_index;
 
@@ -111,8 +111,8 @@ public:
 
     void set_collision_rectangle_x(const float x) { this->collision_rectangle.x = x; }
     void set_collision_rectangle_y(const float y) { this->collision_rectangle.y = y; }
-    void set_collision_rectangle_width(const float width) { this->collision_rectangle.width = collision_width; }
-    void set_collision_rectangle_height(const float height) { this->collision_rectangle.height = collision_height; }
+    void set_collision_rectangle_width() { this->collision_rectangle.width = collision_width; }
+    void set_collision_rectangle_height() { this->collision_rectangle.height = collision_height; }
 
     void draw() const {
         if (sprite) {
@@ -214,7 +214,7 @@ public:
         start_position_x,
         start_position_y,
         100,
-        0.5f,
+        0.8f,
         4,
         4,
         false,
@@ -250,7 +250,7 @@ public:
         }
 
         if (IsKeyPressed(KEY_SPACE) && on_ground) {
-            y_velocity = -3.5f;
+            y_velocity = -3.8f;
             jumping = true;
         }
 
