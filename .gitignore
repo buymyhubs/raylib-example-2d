@@ -4,5 +4,5 @@
 /cmake-build-debug-visual-studio/
 /cmake-build-release-visual-studio/
 /.vs
-/bin
+/dist/bin
 /out/build/x64-Debug
